@@ -1,0 +1,142 @@
+Layout:
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10">
+        <Button
+            android:id="@+id/btnDraw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Draw"
+            android:textSize="22sp"
+            android:backgroundTint="#00BC13"
+            android:layout_weight="1"/>
+        <EditText
+            android:id="@+id/edtNumbOfViews"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:textSize="26sp"
+            android:hint=""
+            android:inputType="numberDecimal"
+            android:layout_weight="9"/>
+
+    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/pbPercent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:id="@+id/containerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical" />
+    </ScrollView>
+
+</LinearLayout>
+
+MainAct:
+public class MainActivity extends AppCompatActivity {
+    ActivityMainBinding binding;
+    ExecutorService executorService;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        executorService = Executors.newSingleThreadExecutor();
+        addEvents();
+    }
+
+
+    private void addEvents(){
+        binding.btnDraw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.containerLayout.removeAllViews();
+                executeLongRunningTask();
+            }
+        });
+    }
+    private void executeLongRunningTask(){
+        binding.edtNumbOfViews.setInputType(InputType.TYPE_CLASS_NUMBER);
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                int numbOfViews = Integer.parseInt(binding.edtNumbOfViews.getText().toString());
+                int numRows = numbOfViews / 3; // Tính số hàng cần tạo
+                Random random = new Random();
+
+                for (int i = 1; i <= numRows; i++) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Tạo một LinearLayout mới cho hàng
+                            LinearLayout rowLayout = new LinearLayout(MainActivity.this);
+                            rowLayout.setOrientation(LinearLayout.HORIZONTAL);
+                            rowLayout.setWeightSum(3f);
+                            rowLayout.setGravity(Gravity.CENTER);
+
+                            for (int j = 0; j < 3; j++) {
+                                int randNumb = random.nextInt(10);
+
+                                // Tạo một Button mới
+                                Button button = new Button(MainActivity.this);
+                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+                                params.setMargins(10, 10, 10, 10);
+                                button.setLayoutParams(params);
+
+                                button.setText(String.valueOf(randNumb));
+                                button.setTextSize(22);
+                                button.setTextColor(Color.WHITE);
+
+                                // Thiết lập màu nền dựa trên số ngẫu nhiên
+                                if (randNumb % 2 == 0) {
+                                    button.setBackgroundColor(Color.rgb(0, 150, 136));
+                                } else {
+                                    button.setBackgroundColor(Color.rgb(122, 122, 122));
+                                }
+
+                                rowLayout.addView(button);
+                            }
+
+                            // Thêm hàng của các Button vào containerLayout
+                            binding.containerLayout.addView(rowLayout);
+                        }
+                    });
+
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            }
+        });
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(executorService != null){
+            executorService.shutdownNow();
+        }
+    }
+}

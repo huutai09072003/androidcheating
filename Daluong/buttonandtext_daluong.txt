@@ -1,0 +1,149 @@
+Layout:
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="10">
+        <EditText
+            android:id="@+id/edtNumbOfViews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Enter a number"
+            android:imeOptions="actionDone" />
+
+        <Button
+            android:id="@+id/btnDraw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DRAW VIEW" />
+
+    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/pbPercent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:visibility="gone" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:id="@+id/containerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical" />
+    </ScrollView>
+</LinearLayout>
+
+MainAct:
+public class MainActivity extends AppCompatActivity {
+
+    ActivityMainBinding binding;
+    ExecutorService executorService;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        executorService = Executors.newSingleThreadExecutor();
+        addEvents();
+    }
+
+    private void addEvents() {
+        binding.btnDraw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.containerLayout.removeAllViews();
+                binding.pbPercent.setVisibility(View.VISIBLE);
+                excuteLongRunningTask();
+            }
+        });
+    }
+
+    private void excuteLongRunningTask() {
+        binding.edtNumbOfViews.setInputType(InputType.TYPE_CLASS_NUMBER);
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                int numbOfViews = Integer.parseInt(binding.edtNumbOfViews.getText().toString());
+                Random random = new Random();
+
+                for (int i = 1; i <= numbOfViews; i++) {
+                    final int progress = (i * 100) / numbOfViews;
+                    final int index = i;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Cập nhật tiến trình
+                            binding.pbPercent.setProgress(progress);
+
+                            // Tạo một View mới (Button hoặc EditText)
+                            View view;
+                            int randNumb = random.nextInt(101); // Số ngẫu nhiên từ 0 đến 100
+
+                            if (index % 2 == 0) {
+                                // Tạo Button cho View có thứ tự chẵn
+                                Button button = new Button(MainActivity.this);
+                                button.setText(String.valueOf(randNumb));
+                                button.setTextSize(22);
+                                button.setTextColor(Color.WHITE);
+                                button.setBackgroundColor(Color.rgb(0, 150, 136));
+                                view = button;
+                            } else {
+                                // Tạo EditText cho View có thứ tự lẻ
+                                EditText editText = new EditText(MainActivity.this);
+                                editText.setText(String.valueOf(randNumb));
+                                editText.setTextSize(22);
+                                editText.setBackgroundColor(Color.rgb(122, 122, 122));
+                                view = editText;
+                            }
+
+                            // Thiết lập LayoutParams cho View
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT);
+                            params.setMargins(10, 10, 10, 10);
+                            view.setLayoutParams(params);
+
+                            // Thêm View vào containerLayout
+                            binding.containerLayout.addView(view);
+                        }
+                    });
+
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        binding.pbPercent.setVisibility(View.GONE);
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (executorService != null){
+            executorService.shutdownNow();
+        }
+    }
+}
