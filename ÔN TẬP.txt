@@ -1,0 +1,1785 @@
+ÔN TẬP 
+CÂU 1(1):
+*activity_main:
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity5">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/drawview5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="drawView" />
+
+        <EditText
+            android:id="@+id/txt_Numb5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="number"
+            android:text="" />
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:isScrollContainer="true"
+        android:id="@+id/containAc5"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
+* MainActivity:
+package com.nguyenvanduan.onthi_android;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+
+import java.util.Random;
+
+public class MainActivity5 extends AppCompatActivity {
+    Button btn;
+    EditText txtNumb;
+    LinearLayout contain;
+    Handler handler;
+    private final  int DRAWBUTTON1 = 1536;
+    private final  int DRAWBUTTON2 = 22617;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main5);
+        btn = findViewById(R.id.drawview5);
+        txtNumb = findViewById(R.id.txt_Numb5);
+        contain = findViewById(R.id.containAc5);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = 1 ; i <= Integer.parseInt(txtNumb.getText().toString()); i++ ){
+                            Message msg = new Message();
+                            if( i % 2 == 0) {
+                                msg.what = DRAWBUTTON1;
+                            }else {
+                                msg.what = DRAWBUTTON2;
+                            }
+                            handler.sendMessage(msg);
+                        }
+                    }
+                });
+                thread.start();
+            }
+        });
+        handler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(@NonNull Message msg) {
+                int ran = new Random().nextInt(100) ;
+                switch (msg.what){
+                    case DRAWBUTTON1:
+                        Button btn1 = new Button(MainActivity5.this);
+                        btn1.setText( String.valueOf(ran));
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                        params.weight = 1.0f;
+                        params.gravity = Gravity.LEFT;
+
+                        btn1.setLayoutParams(params);
+                        contain.addView(btn1);
+                        break;
+
+                    case DRAWBUTTON2:
+                        Button btn2 = new Button(MainActivity5.this);
+                        btn2.setText( String.valueOf(ran));
+                        LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                        params2.weight = 1.0f;
+                        params2.gravity = Gravity.RIGHT;
+                        btn2.setLayoutParams(params2);
+                        contain.addView(btn2);
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+    }
+CÂU 1(2):
+*activity_main.xml:
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/drawview4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="drawView" />
+
+        <EditText
+            android:id="@+id/txt_Numb4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="number"
+            android:text="" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/containAc4"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+</LinearLayout>
+*MainActivity.java:
+package com.nguyenthivankhanh.cau1de2;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+
+import java.util.Random;
+
+public class MainActivity extends AppCompatActivity {
+    Button btndraw;
+    EditText editText;
+    LinearLayout contain;
+
+    Handler han;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        btndraw = findViewById(R.id.drawview4);
+        editText = findViewById(R.id.txt_Numb4);
+        contain = findViewById(R.id.containAc4);
+
+
+        btndraw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = 0 ; i < Integer.valueOf( editText.getText().toString()); i++){
+                            Message msg = new Message();
+                            if (i % 2 == 0){
+                                msg.what = 1;
+                            }else {
+                                msg.what = 2;
+                            }
+                            han.sendMessage(msg);
+                        }
+                    }
+                });
+                thread.start();
+            }
+        });
+
+        han = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(@NonNull Message msg) {
+                int ran = new Random().nextInt(100);
+                switch (msg.what){
+                    case 1:
+                        Button btn = new Button(MainActivity.this);
+                        btn.setText(String.valueOf( ran));
+                        contain.addView(btn);
+                        break;
+                    case 2:
+                        EditText edt = new EditText(MainActivity.this);
+                        edt.setText(String.valueOf( ran));
+                        contain.addView(edt);
+                        break;
+                }
+                return true;
+            };
+        });
+    }
+}
+Câu 1(3):
+*activity_main:
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_drawView"
+            android:text="Draw View"/>
+        <EditText
+            android:inputType="number"
+            android:layout_marginLeft="20dp"
+            android:layout_width="0dp"
+            android:id="@+id/txt_Numb"
+            android:layout_weight="9"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="100dp"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/layout_contain"
+            android:orientation="horizontal"
+            android:layout_height="50dp">
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/layout_contain2"
+            android:orientation="horizontal"
+            android:layout_height="50dp">
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/layout_contain3"
+            android:orientation="horizontal"
+            android:layout_height="50dp">
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/layout_contain4"
+            android:orientation="horizontal"
+            android:layout_height="50dp">
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+</LinearLayout>
+*MainActivity.java:
+package com.nguyenthivankhanh.cau1de3;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+
+    Button btnDrawView;
+    EditText editText;
+    LinearLayout layoutContain,layoutContain2,layoutContain3,layoutContain4;
+    Handler handler;
+    private final  static int DRAW_NUMB_BUTTON = 1000;
+    private final  static int DRAW_DONE = 1001;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        linkView();
+        addEvent();
+        initHandler();
+    }
+    private void linkView(){
+        btnDrawView = findViewById(R.id.btn_drawView);
+        editText = findViewById(R.id.txt_Numb);
+        layoutContain = findViewById(R.id.layout_contain);
+        layoutContain2 = findViewById(R.id.layout_contain2);
+        layoutContain3 = findViewById(R.id.layout_contain3);
+        layoutContain4 = findViewById(R.id.layout_contain4);
+    }
+    private  void addEvent(){
+        btnDrawView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layoutContain.removeAllViews();
+                layoutContain2.removeAllViews();
+                layoutContain3.removeAllViews();
+                layoutContain4.removeAllViews();
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for ( int i = 1 ; i <= 12 ; i++){
+                            Message msg = new Message();
+
+                            if(i == 10){
+                                msg.what = DRAW_NUMB_BUTTON;
+                                msg.arg1 = i;
+                                msg.obj = "*";
+                            }
+                            else if(i == 11){
+                                msg.what = DRAW_NUMB_BUTTON;
+                                msg.arg1 = i;
+                                msg.obj = "0";
+                            }
+                            else if(i == 12){
+                                msg.what = DRAW_NUMB_BUTTON;
+                                msg.arg1 = i;
+                                msg.obj = "#";
+                            }
+
+                            else {
+                                msg.what = DRAW_NUMB_BUTTON;
+                                msg.arg1 = i;
+                                msg.obj = String.valueOf(i);
+                            }
+                            handler.sendMessage(msg);
+                        }
+                        handler.sendEmptyMessage(DRAW_DONE);
+                    }
+                });
+                thread.start();
+            }
+        });
+    }
+
+    private  void initHandler(){
+
+        handler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(@NonNull Message msg) {
+                switch (msg.what){
+                    case DRAW_NUMB_BUTTON:
+                        Button btnNumb = new Button(MainActivity.this);
+                        btnNumb.setText((String)msg.obj);
+                        if(msg.arg1 >= 1 && msg.arg1 <= 3){
+                            layoutContain.addView(btnNumb);
+                        }else if(msg.arg1 >= 4 && msg.arg1 <= 6){
+                            layoutContain2.addView(btnNumb);
+                        }else if(msg.arg1 >= 7 && msg.arg1 <= 9){
+                            layoutContain3.addView(btnNumb);
+                        }else if(msg.arg1 >= 10 && msg.arg1 <= 12){
+                            layoutContain4.addView(btnNumb);
+                        }
+                        btnNumb.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String contentEditText = editText.getText().toString() + btnNumb.getText().toString();
+                                editText.setText(contentEditText);
+                            }
+                        });
+                        break;
+                    case DRAW_DONE:
+                        Toast.makeText(MainActivity.this,"Done",Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+        }) ;
+
+    }
+}
+Câu 1(4):
+*activity_main:
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnDraw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="Draw View"
+            />
+        <EditText
+            android:id="@+id/editText"
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:ems="10"
+            android:inputType="number"
+            android:text=""
+            android:hint="Nhập số hàng" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+
+            />
+
+    </ScrollView>
+
+</LinearLayout>
+*MainActivity.java:
+package com.nguyenthivankhanh.cau1de4;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Color;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+
+import java.util.Random;
+
+public class MainActivity extends AppCompatActivity {
+    private Button btnDraw;
+    private EditText editText;
+    private LinearLayout container;
+    private Handler handler;
+
+    private static final int DRAWBUTTON = 1;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        btnDraw = findViewById(R.id.btnDraw);
+        editText = findViewById(R.id.editText);
+        container = findViewById(R.id.container);
+
+        btnDraw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int numRows = Integer.parseInt(editText.getText().toString());
+                drawButtons(numRows);
+            }
+        });
+        handler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(@NonNull Message msg) {
+                int ran = new Random().nextInt(100);
+                switch (msg.what) {
+                    case DRAWBUTTON:
+                        Button button = new Button(MainActivity.this);
+                        button.setText(String.valueOf(ran));
+                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                                0,
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                1.0f
+                        );
+                        layoutParams.gravity = Gravity.CENTER;
+                        button.setLayoutParams(layoutParams);
+                        container.addView(button);
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    private void drawButtons(int numRows) {
+        container.removeAllViews();
+
+        for (int i = 0; i < numRows; i++) {
+            LinearLayout rowLayout = createNewLinearLayout();
+
+            for (int j = 0; j < 3; j++) {
+                Message msg = new Message();
+                msg.what = DRAWBUTTON;
+                handler.sendMessage(msg);
+                Random random = new Random();
+                int randomNumber = random.nextInt(100);
+                Button button = new Button(MainActivity.this);
+                button.setText(String.valueOf(randomNumber));
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+                layoutParams.setMargins(15,15,15,15);
+                button.setLayoutParams(layoutParams);
+
+                if (randomNumber % 2 == 0) {
+                    button.setBackgroundColor(Color.GREEN);
+                } else {
+                    button.setBackgroundColor(Color.GRAY);
+                }
+
+                rowLayout.addView(button);
+            }
+
+            container.addView(rowLayout);
+        }
+    }
+
+    private LinearLayout createNewLinearLayout() {
+        LinearLayout linearLayout = new LinearLayout(MainActivity.this);
+        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        linearLayout.setLayoutParams(layoutParams);
+        return linearLayout;
+    }
+}
+Câu 1(5):
+*activity_main:
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnDraw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="Draw View"
+            />
+        <EditText
+            android:id="@+id/editText"
+            android:layout_marginLeft="10dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="number"
+            android:text=""
+            android:hint="Nhập số hàng" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        >
+
+        <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+
+            />
+
+    </ScrollView>
+
+</LinearLayout>
+*MainActivity:
+package com.nguyenthivankhanh.cau1de5;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Color;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+
+import java.util.Random;
+
+public class MainActivity extends AppCompatActivity {
+    private Button btnDraw;
+    private EditText editText;
+    private LinearLayout container;
+    private Handler handler;
+    private static final int DRAWBUTTON = 1;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        btnDraw = findViewById(R.id.btnDraw);
+        editText = findViewById(R.id.editText);
+        container = findViewById(R.id.container);
+
+        handler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(@NonNull Message msg) {
+                switch (msg.what) {
+                    case DRAWBUTTON:
+                        drawButtons(Integer.parseInt(msg.obj.toString()));
+                        break;
+                }
+                return true;
+            }
+        });
+
+        btnDraw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int numRows = Integer.parseInt(editText.getText().toString());
+                Message msg = new Message();
+                msg.what = DRAWBUTTON;
+                msg.obj = numRows;
+                handler.sendMessage(msg);
+            }
+        });
+    }
+
+    private void drawButtons(int numRows) {
+        container.removeAllViews();
+
+        for (int i = 0; i < numRows; i++) {
+            LinearLayout rowLayout = createNewLinearLayout();
+
+            int numButtons = 2;
+            float button1Ratio;
+            float button2Ratio;
+            if (i % 2 == 0 ) {
+                button1Ratio = 2.0f;
+                button2Ratio = 1.0f;
+            } else {
+                button1Ratio = 1.0f;
+                button2Ratio = 2.0f;
+            }
+
+            Button button1 = new Button(MainActivity.this);
+            int randomNumber1 = new Random().nextInt(101);
+            button1.setText(String.valueOf(randomNumber1));
+            LinearLayout.LayoutParams layoutParams1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams1.weight = button1Ratio;
+            layoutParams1.setMargins(15,15,15,15);
+            button1.setLayoutParams(layoutParams1);
+            if (randomNumber1 % 2 == 0) {
+                button1.setBackgroundColor(Color.GREEN);
+            } else {
+                button1.setBackgroundColor(Color.GRAY);
+            }
+            rowLayout.addView(button1);
+
+            Button button2 = new Button(MainActivity.this);
+            int randomNumber2 = new Random().nextInt(101);
+            button2.setText(String.valueOf(randomNumber2));
+            LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParams2.weight = button2Ratio;
+            layoutParams2.setMargins(15,15,15,15);
+            button2.setLayoutParams(layoutParams2);
+            if (randomNumber2 % 2 == 0) {
+                button2.setBackgroundColor(Color.GREEN);
+            } else {
+                button2.setBackgroundColor(Color.GRAY);
+            }
+            rowLayout.addView(button2);
+
+            container.addView(rowLayout);
+        }
+    }
+
+    private LinearLayout createNewLinearLayout() {
+        LinearLayout linearLayout = new LinearLayout(MainActivity.this);
+        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        linearLayout.setLayoutParams(layoutParams);
+        return linearLayout;
+    }
+}
+CÂU 2(SACH):
+*activity_main.xml:
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="horizontal">
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+</LinearLayout>
+*custom_dialog.xml:
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200px"
+        android:orientation="horizontal"
+        android:background="#7B1FA2">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="200px"
+            android:layout_marginLeft="100dp"
+            android:gravity="center"
+            android:text="Nhập Thông Tin Sách"
+            android:textColor="@color/white"
+            android:textSize="20dp"/>
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center"
+            android:id="@+id/txtTurnBack"
+            android:src="@drawable/icon_close"
+            android:backgroundTint="#7B1FA2"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150px"
+        android:orientation="horizontal">
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="#00796B"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:text="Nhập mã sách: "/>
+        <EditText
+            android:id="@+id/id"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150px"
+        android:orientation="horizontal">
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="#00796B"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:text="Nhập tên sách: "/>
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150px"
+        android:orientation="horizontal">
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="#00796B"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:text="Nhập giá bán: "/>
+        <EditText
+            android:id="@+id/price"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120px"
+        android:layout_marginTop="30px"
+        android:gravity="end"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="LƯU LẠI"
+            android:id="@+id/btnsave"
+            android:textSize="15dp"
+            android:textColor="@color/white"/>
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:id="@+id/btnback"
+            android:layout_marginLeft="25dp"
+            android:text="TRỞ VỀ"/>
+    </LinearLayout>
+
+</LinearLayout>
+*MainActivity.java:
+package com.nguyenthivankhanh.sach;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.Dialog;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
+    ListView listView;
+    private List<String> list;
+    private ArrayAdapter adap;
+    private SQLiteDatabase database;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        listView = findViewById(R.id.list);
+        PrepareDATABASE();
+        loadDB();
+        addEvent();
+    }
+    private void PrepareDATABASE() {
+        database = openOrCreateDatabase("SachDB", Context.MODE_PRIVATE, null);
+        database.execSQL("CREATE TABLE IF NOT EXISTS sach(id INTERGER PRIMARY KEY NOT NULL, name NVARCHAR(150) NOT NULL, price DOUBLE NOT NULL )");
+
+    }
+    private void Insert(String id, String name, String price){
+        try {
+            database = openOrCreateDatabase("SachDB", Context.MODE_PRIVATE, null);
+            SQLiteStatement sta = database.compileStatement("INSERT INTO sach(id,name,price) VALUES (?,?,?)");
+            sta.bindString(1,id);
+            sta.bindString(2, name);
+            sta.bindString(3,price);
+            sta.execute();
+            Toast.makeText(MainActivity.this, "saved", Toast.LENGTH_LONG).show();
+            loadDB();
+        }
+        catch(Exception e){
+            Toast.makeText(MainActivity.this, "Trung id sach", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void loadDB() {
+        database = openOrCreateDatabase("SachDB", Context.MODE_PRIVATE, null);
+        final Cursor cur = database.rawQuery("SELECT * FROM sach", null);
+        list = new ArrayList<>();
+        while (cur.moveToNext()){
+            list.add("Mã sách: "+ cur.getString(0) + "\n" + "Tên sách: " + cur.getString(1) + "\n" + "Giá bán: " + cur.getString(2));
+
+        }
+        adap = new ArrayAdapter(this, android.R.layout.simple_list_item_1,list);
+        if(list.size() !=0){
+            listView.setAdapter(adap);
+        }
+        else {
+            list.add("Mã sách: "+ "IdDefault" + "\n" + "Tên sách: " + "NameDefault" + "\n" + "Giá bán: " + "PriceDefault\n");
+            listView.setAdapter(adap);
+        }
+    }
+    private void addEvent() {
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Dialog a= new Dialog(MainActivity.this);
+                a.setContentView(R.layout.custom_dialog);
+                a.setCancelable(false);
+                a.show();
+
+                Button btnSave = a.findViewById(R.id.btnsave);
+                Button btnBack = a.findViewById(R.id.btnback);
+                ImageButton btnTurnBack = a.findViewById(R.id.txtTurnBack);
+                EditText ids = a.findViewById(R.id.id);
+                EditText names = a.findViewById(R.id.name);
+                EditText prices = a.findViewById(R.id.price);
+
+                btnSave.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Insert(ids.getText().toString(), names.getText().toString(),prices.getText().toString());
+                    }
+                });
+                btnBack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        a.dismiss();
+                    }
+                });
+                btnTurnBack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        a.dismiss();
+                    }
+                });
+                return false;
+            }
+        });
+    }
+}
+CÂU 2(SAN PHAM):
+*activity_main.xml:
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="horizontal"
+    >
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+</LinearLayout>
+*custom_dialog.xml:
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200px"
+        android:orientation="horizontal"
+        android:background="#7B1FA2">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="200px"
+            android:layout_marginLeft="100dp"
+            android:gravity="center"
+            android:text="Nhập thông tin sản phẩm"
+            android:textColor="@color/white"
+            android:textSize="20dp"/>
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center"
+            android:id="@+id/txtTurnBack"
+            android:src="@drawable/icon_close"
+            android:backgroundTint="#7B1FA2"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150px"
+        android:orientation="horizontal">
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="#00796B"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:text="Nhập mã sản phẩm: "/>
+        <EditText
+            android:id="@+id/id"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150px"
+        android:orientation="horizontal">
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="#00796B"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:text="Nhập tên sản phẩm: "/>
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150px"
+        android:orientation="horizontal">
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="#00796B"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:text="Nhập giá bán: "/>
+        <EditText
+            android:id="@+id/price"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="40dp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120px"
+        android:layout_marginTop="30px"
+        android:gravity="end"
+        android:orientation="horizontal">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="LƯU LẠI"
+            android:id="@+id/btnsave"
+            android:textSize="15dp"
+            android:textColor="@color/white"/>
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:id="@+id/btnback"
+            android:layout_marginLeft="25dp"
+            android:text="TRỞ VỀ"/>
+    </LinearLayout>
+
+
+</LinearLayout>
+*MainActivity.java:
+package com.nguyenthivankhanh.sanpham;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.Dialog;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
+import android.media.Image;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
+    ListView listView;
+    private List<String> list;
+    private ArrayAdapter adap;
+    private SQLiteDatabase database;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        listView = findViewById(R.id.list);
+        PrepareDATABASE();
+        loadDB();
+        addEvent();
+    }
+
+
+    private void PrepareDATABASE() {
+        database = openOrCreateDatabase("SanPhamDB", Context.MODE_PRIVATE, null);
+        database.execSQL("CREATE TABLE IF NOT EXISTS sanpham(id INTERGER PRIMARY KEY NOT NULL, name NVARCHAR(150) NOT NULL, price DOUBLE NOT NULL )");
+
+    }
+    private void Insert(String id, String name, String price){
+        try {
+            database = openOrCreateDatabase("SanPhamDB", Context.MODE_PRIVATE, null);
+            SQLiteStatement sta = database.compileStatement("INSERT INTO sanpham(id,name,price) VALUES (?,?,?)");
+            sta.bindString(1,id);
+            sta.bindString(2, name);
+            sta.bindString(3,price);
+            sta.execute();
+            Toast.makeText(MainActivity.this, "saved", Toast.LENGTH_LONG).show();
+            loadDB();
+        }
+        catch(Exception e){
+            Toast.makeText(MainActivity.this, "Trung id san pham", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void loadDB() {
+        database = openOrCreateDatabase("SanPhamDB", Context.MODE_PRIVATE, null);
+        final Cursor cur = database.rawQuery("SELECT * FROM sanpham", null);
+        list = new ArrayList<>();
+        while (cur.moveToNext()){
+            list.add("Mã sản phẩm: "+ cur.getString(0) + "\n" + "Tên sản phẩm: " + cur.getString(1) + "\n" + "Giá bán: " + cur.getString(2));
+
+        }
+        adap = new ArrayAdapter(this, android.R.layout.simple_list_item_1,list);
+        if(list.size() !=0){
+            listView.setAdapter(adap);
+        }
+        else {
+            list.add("Mã sản phẩm: "+ "IdDefault" + "\n" + "Tên sản phẩm: " + "NameDefault" + "\n" + "Giá bán: " + "PriceDefault\n");
+            listView.setAdapter(adap);
+        }
+    }
+    private void addEvent() {
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Dialog a= new Dialog(MainActivity.this);
+                a.setContentView(R.layout.custom_dialog);
+                a.setCancelable(false);
+                a.show();
+
+                Button btnSave = a.findViewById(R.id.btnsave);
+                Button btnBack = a.findViewById(R.id.btnback);
+                ImageButton btnTurnBack = a.findViewById(R.id.txtTurnBack);
+                EditText idsp = a.findViewById(R.id.id);
+                EditText namesp = a.findViewById(R.id.name);
+                EditText pricesp = a.findViewById(R.id.price);
+
+                btnSave.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Insert(idsp.getText().toString(), namesp.getText().toString(),pricesp.getText().toString());
+                    }
+                });
+                btnBack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        a.dismiss();
+                    }
+                });
+                btnTurnBack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        a.dismiss();
+                    }
+                });
+                return false;
+            }
+        });
+    }
+}
+CÂU 2(SAN PHAM DIEN THOAI)
+*activity_main:
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:gravity="center"
+        android:background="@color/teal_700"
+        android:text="danh sach san pham" />
+    <ListView
+        android:id="@+id/lisview6"
+        android:layout_width="match_parent"
+        android:listSelector="#C2185B"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>
+*custom_dialog6:
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="#7B1FA2"
+        android:layout_height="200px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="200px"
+            android:layout_marginLeft="100dp"
+            android:gravity="center"
+            android:text="Thông tin sản phẩm"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_marginLeft="30dp"
+            android:id="@+id/txtTurnBack_6"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_close"
+            android:layout_gravity="center"
+            android:backgroundTint="#7B1FA2"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="150px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="#00796B"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:text="mã sản phẩm: "/>
+
+        <EditText
+            android:id="@+id/id_6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="150px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="#00796B"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:text="tên sản phẩm "/>
+
+        <EditText
+            android:id="@+id/name_6"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="150px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="#00796B"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:text="giá sản phẩm: "/>
+
+        <EditText
+            android:layout_marginLeft="25dp"
+            android:id="@+id/price_6"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="120px"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="xóa sản phẩm "
+            android:id="@+id/btndelete"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+
+        <Button
+            android:layout_width="100dp"
+            android:id="@+id/btnback_6"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="25dp"
+            android:text="tro ve" />
+
+    </LinearLayout>
+</LinearLayout>
+*MainActivity:
+package com.nguyenthivankhanh.sanpham_dienthoai;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.Dialog;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
+    ListView listview;
+    SQLiteDatabase db;
+    ArrayAdapter<String> adapter;
+    Button btnDelete, btnReturn;
+    ImageButton btnTurnback;
+    EditText edtname,edtid,edtPrice;
+    List<String>  list;
+    List<String>  list2;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        listview = findViewById(R.id.lisview6);
+        PrepareDB();
+        LoadData();
+        LoadEvent();
+    }
+    private  void PrepareDB(){
+        db = openOrCreateDatabase("sanphamDB", Context.MODE_PRIVATE,null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS sanpham(id  NVARCHAR PRIMARY KEY, name NVARCHAR, price NVARCHAR) ");
+    }
+    private void insertDefaultData(String id, String name, String price){
+        SQLiteStatement sta = db.compileStatement("INSERT INTO sanpham(id,name,price) VALUES(?,?,?)");
+        sta.bindString(1,id);
+        sta.bindString(2,name);
+        sta.bindString(3,price);
+        sta.execute();
+    }
+    private  void LoadData(){
+        db = openOrCreateDatabase("sanphamDB", Context.MODE_PRIVATE,null);
+        Cursor c = db.rawQuery("SELECT * FROM sanpham",null);
+
+        if (c.getCount() == 0){
+            insertDefaultData("SP-123","VERTU","300000");
+            insertDefaultData("SP-124","SAMSUNG","253568");
+            insertDefaultData("SP-125","OPPO","20000");
+            insertDefaultData("SP-126","NOKIA","24000");
+            insertDefaultData("SP-127","REDMI","300000");
+            insertDefaultData("SP-128","IPHONE","670000");
+        }
+        else {
+            list = new ArrayList<>();
+            list2 = new ArrayList<>();
+            while (c.moveToNext()) {
+                list.add(c.getString(0)+"\n"+c.getString(1)+"\n"+c.getString(2)+"\n");
+                list2.add(c.getString(0)+"\n");
+            }
+        }
+
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,list2);
+        listview.setAdapter(adapter);
+
+    }
+
+    private void LoadEvent(){
+        listview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Dialog dialog = new Dialog(MainActivity.this);
+                dialog.setContentView(R.layout.custom_dialog6);
+                dialog.show();
+
+                btnDelete = dialog.findViewById(R.id.btndelete);
+                btnTurnback = dialog.findViewById(R.id.txtTurnBack_6);
+                btnReturn = dialog.findViewById(R.id.btnback_6);
+
+                edtid = dialog.findViewById(R.id.id_6);
+                edtname = dialog.findViewById(R.id.name_6);
+                edtPrice = dialog.findViewById(R.id.price_6);
+
+                String[] data = list.get(position).toString().split("\n");
+                list.get(position);
+                edtid.setText(data[0]);
+                edtname.setText(data[1]);
+                edtPrice.setText(data[2]);
+
+
+                btnDelete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        db = openOrCreateDatabase("sanphamDB",Context.MODE_PRIVATE,null);
+                        SQLiteStatement sta =  db.compileStatement("DELETE FROM sanpham WHERE id = ?" );
+                        sta.bindString(1,edtid.getText().toString());
+                        sta.execute();
+                        LoadData();
+                    }
+                });
+                btnTurnback.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                btnReturn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                return true;
+            }
+        });
+    }
+}
+CÂU 2(SINH VIEN):
+*activity_main.xml:
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>
+*custom_dialog.xml:
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:background="#7B1FA2"
+        android:layout_height="200px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="200px"
+            android:layout_marginLeft="100dp"
+            android:gravity="center"
+            android:text="Thông tin sinh viên"
+            android:textColor="@color/white"
+            android:textSize="20dp" />
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_marginLeft="70dp"
+            android:layout_gravity="center"
+            android:id="@+id/txtTurnBack"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_close"
+            android:backgroundTint="#7B1FA2"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="150px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="#00796B"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:text="Ho ten sinh vien: "/>
+
+        <EditText
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="150px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="#00796B"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:text="Lop: "/>
+
+        <EditText
+            android:layout_marginLeft="80dp"
+            android:layout_width="300dp"
+            android:id="@+id/lop"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="150px">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="#00796B"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:text="ma sinh vien: "/>
+
+        <EditText
+            android:layout_marginLeft="25dp"
+            android:id="@+id/id"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="120px"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="luu lai "
+            android:id="@+id/btnsave"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+
+        <Button
+            android:layout_width="100dp"
+            android:id="@+id/btnback"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="25dp"
+            android:text="tro ve" />
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>
+*MainActivity.java:
+package com.nguyenthivankhanh.sinhvien;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.Dialog;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
+    ListView listView;
+    private List<String> list;
+    private ArrayAdapter adap ;
+    private SQLiteDatabase database;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        listView = findViewById(R.id.list);
+        PrepareDATABASE();
+        loadDB();
+        addEvent();
+
+    }
+
+    private  void PrepareDATABASE(){
+        database = openOrCreateDatabase("SinhVienDB", Context.MODE_PRIVATE,null);
+//       database.execSQL(" DELETE FROM sinhvien");
+        database.execSQL(" CREATE TABLE IF NOT EXISTS sinhvien(id INTERGER PRIMARY KEY NOT NULL, name NVARCHAR(150) NOT NULL, lop NVARCHAR(150) NOT NULL) ");
+
+    }
+    private void Insert(String id, String name, String lop){
+
+        try {
+            database = openOrCreateDatabase("SinhVienDB", Context.MODE_PRIVATE,null);
+            SQLiteStatement sta = database.compileStatement("INSERT INTO sinhvien(id,name,lop) VALUES (?,?,?)");
+            sta.bindString(1,id);
+            sta.bindString(2,name);
+            sta.bindString(3,lop);
+            sta.execute();
+            Toast.makeText(MainActivity.this,"saved",Toast.LENGTH_LONG).show();
+            loadDB();
+        }
+        catch (Exception e){
+            Toast.makeText(MainActivity.this,"Trung id sinh vien",Toast.LENGTH_LONG).show();
+        }
+
+    }
+    private void loadDB(){
+        database = openOrCreateDatabase("SinhVienDB", Context.MODE_PRIVATE,null);
+        final Cursor cur = database.rawQuery("SELECT * FROM sinhvien",null);
+
+        list = new ArrayList<>();
+
+        while (cur.moveToNext()){
+            list.add(  " Họ và tên: "+ cur.getString(1) + "\n" + " Lớp: " + cur.getString(2)+ "\n" + " Mã sinh viên: " + cur.getString(0));
+        }
+        adap = new ArrayAdapter(this, android.R.layout.simple_list_item_1,list);
+        if(list.size() != 0){
+            listView.setAdapter(adap);
+        }
+        else {
+            list.add(" Họ và tên: "+ "nameDefault \n" + " Lớp: " + "LopDefault \n" + " Mã sinh viên: " + "IDDefault\n");
+            listView.setAdapter(adap);
+        }
+
+    }
+
+    private void addEvent(){
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Dialog a = new Dialog(MainActivity.this);
+                a.setContentView(R.layout.custom_dialog);
+                a.setCancelable(false);
+                a.show();
+
+                Button btnSave = a.findViewById(R.id.btnsave);
+                Button btnBack = a.findViewById(R.id.btnback);
+                ImageButton btnTurnBack = a.findViewById(R.id.txtTurnBack);
+                EditText namesv = a.findViewById(R.id.name);
+                EditText idsv = a.findViewById(R.id.id);
+                EditText lopsv = a.findViewById(R.id.lop);
+
+                btnSave.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Insert(idsv.getText().toString(),namesv.getText().toString(),lopsv.getText().toString());
+                    }
+                });
+                btnBack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        a.dismiss();
+                    }
+                });
+                btnTurnBack.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        a.dismiss();
+                    }
+                });
+                return true;
+            }
+        });
+    }
+}
+
