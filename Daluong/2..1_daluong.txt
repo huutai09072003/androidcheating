@@ -1,0 +1,113 @@
+Layout:
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:weightSum="10">
+
+        <Button
+            android:id="@+id/btn_draw"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:text="Draw View"
+            android:backgroundTint="#03A9F4"
+            android:layout_weight="1"
+            />
+
+        <EditText
+            android:id="@+id/edtNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:textSize="25sp"
+            android:textAlignment="center"
+            android:layout_weight="9"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/lo_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            />
+
+    </ScrollView>
+
+
+</LinearLayout>
+
+Main Act:
+
+public class MainActivity extends AppCompatActivity {
+    ActivityMainBinding binding;
+    private Handler handler = new Handler(Looper.getMainLooper());
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        binding.btnDraw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.loRow.removeAllViews(); // Xóa các view cũ trước khi vẽ mới
+                int numViews;
+                try {
+                    numViews = Integer.parseInt(binding.edtNumber.getText().toString());
+                    drawViews(numViews);
+                } catch (NumberFormatException e) {
+                    Toast.makeText(MainActivity.this, "Ko hop le", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+    private void drawViews(int numViews) {
+        int numRows = (numViews + 2) / 3; // Tính số dòng cần thiết
+        new Thread(() -> {
+            for (int i = 0; i < numRows; i++) {
+                int finalI = i;
+                int viewsRemaining = numViews - finalI * 3; // Số TextView còn lại để vẽ
+                int viewsInThisRow = Math.min(3, viewsRemaining); // Số TextView trong dòng hiện tại
+                handler.post(() -> addRow(viewsInThisRow));
+            }
+        }).start();
+    }
+
+    private void addRow(int cols) {
+        LinearLayout line = new LinearLayout(this);
+        line.setOrientation(LinearLayout.HORIZONTAL);
+        line.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        for (int i = 0; i < cols; i++) {
+            TextView textView = new TextView(this);
+            int num = new Random().nextInt(10);
+            textView.setText(String.valueOf(num));
+            textView.setGravity(Gravity.CENTER);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, 150, 1);
+            layoutParams.setMargins(5 , 5 , 5 , 5);
+            textView.setLayoutParams(layoutParams);
+            textView.setBackgroundColor(num % 2 == 0 ? Color.CYAN : Color.LTGRAY);
+            line.addView(textView);
+        }
+        binding.loRow.addView(line);
+    }
+}
